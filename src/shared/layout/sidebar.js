@@ -62,7 +62,7 @@ const Sidebar = () => {
 
       <div className="flex flex-col overflow-y-auto duration-300 ease-linear no-scrollbar">
         <nav>
-          <ul class="flex flex-col gap-4 mb-6">
+          <ul className="flex flex-col gap-4 mb-6">
             {!myProfileStore.busy
               ? Menus.map((menu) =>
                   myProfileStore.haveAccess(menu.name) ? (

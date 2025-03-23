@@ -16,13 +16,35 @@ class MyProfileStore {
   constructor() {
     makeAutoObservable(this);
 
-    this.name = "";
-    this.email = "";
-    this.id = "";
-    this.token = "";
-    this.role = "";
-    this.avatar = "";
-    this.myAccess = [];
+    try {
+      const userProfile = localStorage.getItem("user-profile");
+
+      if (userProfile) {
+        const profile = JSON.parse(userProfile);
+        this.name = profile.name;
+        this.email = profile.email;
+        this.id = profile.id;
+        this.token = profile.token;
+        this.avatar = profile.avatar;
+        this.myAccess = profile.myAccess;
+      } else {
+        this.name = "";
+        this.email = "";
+        this.id = "";
+        this.token = "";
+        this.role = "";
+        this.avatar = "";
+        this.myAccess = [];
+      }
+    } catch (error) {
+      this.name = "";
+      this.email = "";
+      this.id = "";
+      this.token = "";
+      this.role = "";
+      this.avatar = "";
+      this.myAccess = [];
+    }
     this.permissionStore = new PermissionStore();
   }
 
@@ -45,6 +67,8 @@ class MyProfileStore {
           }
         });
 
+        localStorage.setItem("user-profile", this.asJson);
+
         this.permissionStore.fetchPermissions();
       }, 1000);
     });
@@ -54,11 +78,27 @@ class MyProfileStore {
     return this.myAccess.includes(page);
   }
 
+  get asJson() {
+    return JSON.stringify({
+      name: this.name,
+      email: this.email,
+      id: this.id,
+      token: this.token,
+      avatar: this.avatar,
+      myAccess: this.myAccess,
+    });
+  }
+
   doLogout() {
     this.name = "";
     this.email = "";
     this.id = "";
     this.token = "";
+    this.role = "";
+    this.avatar = "";
+    this.myAccess = [];
+
+    localStorage.removeItem("user-profile");
   }
 }
 

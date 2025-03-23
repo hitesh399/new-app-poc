@@ -1,9 +1,11 @@
 "use client";
 
+import useHaveAccess from "@/shared/useHaveAccess";
 import React from "react";
 import { useTranslation } from "react-i18next";
 
 export default function Dashboard() {
+  useHaveAccess("dashboard");
   const { t } = useTranslation();
 
   return (
@@ -24,6 +26,6 @@ export default function Dashboard() {
           <p>{t("This is some sample text for card 3.")}</p>
         </div>
       </div>
-     </div>
+    </div>
   );
 }
